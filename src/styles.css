@@ -1,0 +1,246 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Fraunces", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --radius: 0.875rem;
+  /* Refined warm editorial palette: bright porcelain paper / deep ink / terracotta */
+  --background: oklch(0.984 0.008 83);
+  --foreground: oklch(0.205 0.020 48);
+  --card: oklch(0.997 0.004 85);
+  --card-foreground: oklch(0.205 0.020 48);
+  --popover: oklch(0.997 0.004 85);
+  --popover-foreground: oklch(0.205 0.020 48);
+  --primary: oklch(0.565 0.168 36); /* terracotta, a touch richer */
+  --primary-foreground: oklch(0.99 0.006 85);
+  --secondary: oklch(0.948 0.016 80);
+  --secondary-foreground: oklch(0.205 0.020 48);
+  --muted: oklch(0.948 0.014 80);
+  --muted-foreground: oklch(0.455 0.026 52);
+  --accent: oklch(0.815 0.092 62); /* warm gold */
+  --accent-foreground: oklch(0.205 0.020 48);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.99 0.006 85);
+  --border: oklch(0.905 0.012 80);
+  --input: oklch(0.905 0.012 80);
+  --ring: oklch(0.565 0.168 36);
+
+  --shadow-soft: 0 12px 44px -14px oklch(0.42 0.07 40 / 0.20);
+  --shadow-glow: 0 22px 64px -22px oklch(0.565 0.168 36 / 0.38);
+  --gradient-warm: linear-gradient(135deg, oklch(0.95 0.035 78), oklch(0.90 0.060 58));
+  --gradient-hero: radial-gradient(ellipse at top right, oklch(0.86 0.085 64 / 0.55), transparent 60%),
+                   radial-gradient(ellipse at bottom left, oklch(0.565 0.168 36 / 0.16), transparent 60%);
+  --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark token set: warm charcoal base, cream ink, terracotta accent kept.
+   Applied when the user forces dark via the toggle (data-theme="dark") OR
+   when the OS prefers dark and the user has not forced light. */
+:root[data-theme="dark"] {
+  --background: oklch(0.18 0.012 60);
+  --foreground: oklch(0.94 0.012 80);
+  --card: oklch(0.22 0.014 60);
+  --card-foreground: oklch(0.94 0.012 80);
+  --popover: oklch(0.22 0.014 60);
+  --popover-foreground: oklch(0.94 0.012 80);
+  --primary: oklch(0.64 0.15 40);
+  --primary-foreground: oklch(0.16 0.012 60);
+  --secondary: oklch(0.27 0.02 60);
+  --secondary-foreground: oklch(0.94 0.012 80);
+  --muted: oklch(0.27 0.02 60);
+  --muted-foreground: oklch(0.70 0.02 70);
+  --accent: oklch(0.52 0.08 65);
+  --accent-foreground: oklch(0.94 0.012 80);
+  --destructive: oklch(0.58 0.20 27);
+  --destructive-foreground: oklch(0.96 0.01 80);
+  --border: oklch(0.30 0.015 60);
+  --input: oklch(0.30 0.015 60);
+  --ring: oklch(0.64 0.15 40);
+
+  --shadow-soft: 0 10px 40px -10px oklch(0 0 0 / 0.5);
+  --shadow-glow: 0 20px 60px -20px oklch(0.64 0.15 40 / 0.45);
+  --gradient-warm: linear-gradient(135deg, oklch(0.28 0.03 60), oklch(0.24 0.04 50));
+  --gradient-hero: radial-gradient(ellipse at top right, oklch(0.52 0.08 65 / 0.28), transparent 60%),
+                   radial-gradient(ellipse at bottom left, oklch(0.64 0.15 40 / 0.18), transparent 60%);
+}
+:root[data-theme="dark"] .aurora { opacity: 0.5; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: oklch(0.18 0.012 60);
+    --foreground: oklch(0.94 0.012 80);
+    --card: oklch(0.22 0.014 60);
+    --card-foreground: oklch(0.94 0.012 80);
+    --popover: oklch(0.22 0.014 60);
+    --popover-foreground: oklch(0.94 0.012 80);
+    --primary: oklch(0.64 0.15 40);
+    --primary-foreground: oklch(0.16 0.012 60);
+    --secondary: oklch(0.27 0.02 60);
+    --secondary-foreground: oklch(0.94 0.012 80);
+    --muted: oklch(0.27 0.02 60);
+    --muted-foreground: oklch(0.70 0.02 70);
+    --accent: oklch(0.52 0.08 65);
+    --accent-foreground: oklch(0.94 0.012 80);
+    --destructive: oklch(0.58 0.20 27);
+    --destructive-foreground: oklch(0.96 0.01 80);
+    --border: oklch(0.30 0.015 60);
+    --input: oklch(0.30 0.015 60);
+    --ring: oklch(0.64 0.15 40);
+
+    --shadow-soft: 0 10px 40px -10px oklch(0 0 0 / 0.5);
+    --shadow-glow: 0 20px 60px -20px oklch(0.64 0.15 40 / 0.45);
+    --gradient-warm: linear-gradient(135deg, oklch(0.28 0.03 60), oklch(0.24 0.04 50));
+    --gradient-hero: radial-gradient(ellipse at top right, oklch(0.52 0.08 65 / 0.28), transparent 60%),
+                     radial-gradient(ellipse at bottom left, oklch(0.64 0.15 40 / 0.18), transparent 60%);
+  }
+  :root:not([data-theme="light"]) .aurora { opacity: 0.5; }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  /* Tailwind v4 dropped the default pointer cursor on buttons. Restore it. */
+  button:not(:disabled), [role="button"], a[href], label[for], summary {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    color-scheme: light dark;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility text-balance { text-wrap: balance; }
+@utility shadow-soft { box-shadow: var(--shadow-soft); }
+@utility shadow-glow { box-shadow: var(--shadow-glow); }
+@utility bg-hero { background-image: var(--gradient-hero); }
+@utility bg-warm { background-image: var(--gradient-warm); }
+
+@utility marquee {
+  animation: marquee 20s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@utility float-slow {
+  animation: floaty 7s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-18px) rotate(2deg); }
+}
+
+@utility shimmer {
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Reverse marquee for the second, opposite-direction row */
+@utility marquee-reverse {
+  animation: marquee-reverse 24s linear infinite;
+}
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* Small screens: shorter track = slower pixel speed, so speed it up. */
+@media (max-width: 640px) {
+  .marquee { animation-duration: 12s; }
+  .marquee-reverse { animation-duration: 14s; }
+}
+
+/* Living aurora mesh — slow drifting warm light behind the hero */
+@utility aurora {
+  background:
+    radial-gradient(40% 50% at 15% 20%, oklch(0.85 0.08 65 / 0.55), transparent 60%),
+    radial-gradient(45% 55% at 85% 15%, oklch(0.55 0.16 38 / 0.30), transparent 60%),
+    radial-gradient(50% 60% at 75% 85%, oklch(0.80 0.10 50 / 0.40), transparent 60%),
+    radial-gradient(40% 50% at 25% 90%, oklch(0.88 0.06 40 / 0.35), transparent 60%);
+  background-size: 200% 200%;
+  animation: aurora 18s ease-in-out infinite;
+  filter: blur(8px);
+}
+@keyframes aurora {
+  0%, 100% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+  50%      { background-position: 100% 50%, 0% 50%, 0% 0%, 100% 100%; }
+}
+
+/* Animated gradient ink for headline accents */
+@utility text-aurora {
+  background-image: linear-gradient(100deg,
+    oklch(0.55 0.16 38), oklch(0.70 0.14 55), oklch(0.55 0.16 38));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-aurora 6s ease-in-out infinite;
+}
+@keyframes text-aurora {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+
+/* Fine film grain - kills the flat, cheap look */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Accessibility: collapse every infinite/looping CSS animation when the
+   visitor asks for reduced motion. JS physics is gated separately in TSX. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee, .marquee-reverse, .aurora, .text-aurora, .float-slow, .shimmer {
+    animation: none !important;
+  }
+  .marquee-reverse { transform: none; }
+}
