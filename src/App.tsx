@@ -10,7 +10,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent, type FormEvent } from "react";
-import { ShoppingBag, Search, ArrowUpRight, Truck, Shield, Leaf, Sparkles, Sun, Moon, Plus, Minus, Trash2, X, Loader2, Check, Instagram, Facebook, MessageCircle } from "lucide-react";
+import { ShoppingBag, Search, ArrowUpRight, Truck, Shield, Leaf, Sparkles, Sun, Moon, Plus, Minus, Trash2, X, Loader2, Check } from "lucide-react";
 
 import { CartProvider, useCart } from "@/lib/cart";
 import { sendOrder } from "@/lib/orders";
@@ -845,13 +845,6 @@ function Footer() {
         <div className="md:col-span-2">
           <div className="font-display text-2xl">Hương Vị <span className="italic text-primary">Đồng Tháp</span></div>
           <p className="mt-4 text-muted-foreground max-w-sm">Nem chua, nem bì, chả lụa đặc sản Đồng Tháp. Gói tay mỗi ngày tại Lai Vung.</p>
-          <div className="mt-6 flex gap-3">
-            {[Instagram, Facebook, MessageCircle].map((I, i) => (
-              <a key={i} href="#" className="size-10 rounded-full border border-border flex items-center justify-center hover:bg-foreground hover:text-background transition">
-                <I className="size-4" />
-              </a>
-            ))}
-          </div>
         </div>
         <div>
           <div className="font-medium mb-4">Phân loại</div>
