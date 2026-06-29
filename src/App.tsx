@@ -671,7 +671,6 @@ function CartDrawer() {
   const { items, open, setOpen, inc, dec, remove, total, clear } = useCart();
   const [form, setForm] = useState({ name: "", phone: "", address: "", note: "" });
   const [payment, setPayment] = useState<"qr" | "cod">("cod");
-  const [paid, setPaid] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
   const [phoneTouched, setPhoneTouched] = useState(false);
@@ -709,7 +708,6 @@ function CartDrawer() {
         items: items.map((i) => ({ name: i.name, qty: i.qty, price: i.price, unit: i.unit })),
         total,
         payment,
-        paid: payment === "qr" ? paid : false,
       });
       setStatus("sent");
       clear();
@@ -723,7 +721,6 @@ function CartDrawer() {
     setStatus("idle");
     setForm({ name: "", phone: "", address: "", note: "" });
     setPayment("cod");
-    setPaid(false);
     setOpen(false);
   };
 
@@ -775,8 +772,9 @@ function CartDrawer() {
                 </button>
               </div>
             ) : (
-              <>
-                <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+              <form onSubmit={submit} className="flex-1 min-h-0 flex flex-col">
+                <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+                  <div className="space-y-4">
                   {items.map((it) => (
                     <div key={it.id} className="flex gap-4">
                       <img src={it.img} alt={it.name} width={80} height={80} className="size-20 rounded-xl object-cover bg-muted shrink-0" />
@@ -796,14 +794,9 @@ function CartDrawer() {
                       </div>
                     </div>
                   ))}
-                </div>
-
-                <form onSubmit={submit} className="border-t border-border px-6 py-5 space-y-3 shrink-0">
-                  <div className="flex items-center justify-between text-lg">
-                    <span className="font-medium">Tổng cộng</span>
-                    <span className="font-display text-primary">{fmt(total)}</span>
                   </div>
-                  <div className="grid gap-2">
+
+                  <div className="grid gap-2 border-t border-border pt-5">
                     <input required value={form.name} onChange={set("name")} placeholder="Họ và tên" aria-label="Họ và tên" className={inputCls} />
                     <div>
                       <input
@@ -849,17 +842,19 @@ function CartDrawer() {
                         Nội dung: <span className="font-medium text-foreground">thanh toan tien don hang</span><br />
                         Số tiền: <span className="font-medium text-primary">{fmt(total)}</span>
                       </div>
-                      <label className="flex items-center justify-center gap-2 text-sm cursor-pointer select-none">
-                        <input type="checkbox" checked={paid} onChange={(e) => setPaid(e.target.checked)} className="size-4 accent-primary" />
-                        Tôi đã chuyển khoản
-                      </label>
                     </div>
                   )}
 
                   {status === "error" && (
                     <p className="text-sm text-destructive">{error}</p>
                   )}
+                </div>
 
+                <div className="border-t border-border px-6 py-4 space-y-3 shrink-0 bg-background">
+                  <div className="flex items-center justify-between text-lg">
+                    <span className="font-medium">Tổng cộng</span>
+                    <span className="font-display text-primary">{fmt(total)}</span>
+                  </div>
                   <button
                     type="submit"
                     disabled={status === "sending"}
@@ -867,8 +862,8 @@ function CartDrawer() {
                   >
                     {status === "sending" ? (<><Loader2 className="size-4 animate-spin" /> Đang gửi đơn...</>) : "Đặt hàng"}
                   </button>
-                </form>
-              </>
+                </div>
+              </form>
             )}
           </motion.aside>
         </div>

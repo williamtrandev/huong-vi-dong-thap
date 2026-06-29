@@ -12,7 +12,6 @@ export interface OrderPayload {
   items: OrderItem[];
   total: number;
   payment: PaymentMethod;
-  paid: boolean;
 }
 
 /**
