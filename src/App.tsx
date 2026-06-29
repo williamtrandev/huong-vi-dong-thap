@@ -398,7 +398,6 @@ function Shop({ cat, setCat }: { cat: Category; setCat: (c: Category) => void })
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
         >
           <span className="text-sm uppercase tracking-widest text-primary">Cửa hàng</span>
-          <h2 className="font-display text-4xl md:text-6xl mt-3 text-balance">Chọn theo phân loại.</h2>
         </motion.div>
         <div className="relative w-full sm:w-72">
           <Search className="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
@@ -671,6 +670,8 @@ function CartDrawer() {
   const reduce = useReducedMotion();
   const { items, open, setOpen, inc, dec, remove, total, clear } = useCart();
   const [form, setForm] = useState({ name: "", phone: "", address: "", note: "" });
+  const [payment, setPayment] = useState<"qr" | "cod">("cod");
+  const [paid, setPaid] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
   const [phoneTouched, setPhoneTouched] = useState(false);
@@ -707,6 +708,8 @@ function CartDrawer() {
         customer: form,
         items: items.map((i) => ({ name: i.name, qty: i.qty, price: i.price, unit: i.unit })),
         total,
+        payment,
+        paid: payment === "qr" ? paid : false,
       });
       setStatus("sent");
       clear();
@@ -719,10 +722,14 @@ function CartDrawer() {
   const resetAndContinue = () => {
     setStatus("idle");
     setForm({ name: "", phone: "", address: "", note: "" });
+    setPayment("cod");
+    setPaid(false);
     setOpen(false);
   };
 
   const inputCls = "w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-ring/40";
+  // VietQR động: VCB (acquirer 970436), STK 1023770862, số tiền = tổng đơn.
+  const qrUrl = `https://img.vietqr.io/image/970436-1023770862-compact2.png?amount=${total}&addInfo=${encodeURIComponent("thanh toan tien don hang")}&accountName=${encodeURIComponent("TRAN TAN THANH")}`;
 
   return (
     <AnimatePresence>
@@ -816,6 +823,38 @@ function CartDrawer() {
                     <input required value={form.address} onChange={set("address")} placeholder="Địa chỉ giao hàng" aria-label="Địa chỉ" className={inputCls} />
                     <textarea value={form.note} onChange={set("note")} placeholder="Ghi chú (tuỳ chọn)" aria-label="Ghi chú" rows={2} className={inputCls} />
                   </div>
+
+                  <div className="space-y-2">
+                    <div className="text-sm font-medium">Phương thức thanh toán</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {([["cod", "Khi nhận hàng"], ["qr", "Quét mã QR"]] as const).map(([val, label]) => (
+                        <button
+                          key={val}
+                          type="button"
+                          onClick={() => setPayment(val)}
+                          className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${payment === val ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-foreground/40"}`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {payment === "qr" && (
+                    <div className="rounded-xl border border-border bg-card p-4 space-y-3 text-center">
+                      <img src={qrUrl} alt="Mã VietQR thanh toán" width={220} height={220} className="mx-auto size-52 rounded-lg bg-white object-contain" />
+                      <div className="text-xs text-muted-foreground leading-relaxed">
+                        VCB • <span className="font-medium text-foreground tabular-nums">1023770862</span><br />
+                        Chủ TK: <span className="font-medium text-foreground">TRAN TAN THANH</span><br />
+                        Nội dung: <span className="font-medium text-foreground">thanh toan tien don hang</span><br />
+                        Số tiền: <span className="font-medium text-primary">{fmt(total)}</span>
+                      </div>
+                      <label className="flex items-center justify-center gap-2 text-sm cursor-pointer select-none">
+                        <input type="checkbox" checked={paid} onChange={(e) => setPaid(e.target.checked)} className="size-4 accent-primary" />
+                        Tôi đã chuyển khoản
+                      </label>
+                    </div>
+                  )}
 
                   {status === "error" && (
                     <p className="text-sm text-destructive">{error}</p>

@@ -5,10 +5,14 @@ export interface OrderItem {
   unit: string;
 }
 
+export type PaymentMethod = "qr" | "cod";
+
 export interface OrderPayload {
   customer: { name: string; phone: string; address: string; note?: string };
   items: OrderItem[];
   total: number;
+  payment: PaymentMethod;
+  paid: boolean;
 }
 
 /**
