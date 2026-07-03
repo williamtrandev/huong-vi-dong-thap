@@ -10,7 +10,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent, type FormEvent } from "react";
-import { ShoppingBag, Search, ArrowUpRight, Truck, Shield, Leaf, Sparkles, Sun, Moon, Plus, Minus, Trash2, X, Loader2, Check } from "lucide-react";
+import { ShoppingBag, Search, ArrowUpRight, Shield, Leaf, Sparkles, Sun, Moon, Plus, Minus, Trash2, X, Loader2, Check } from "lucide-react";
 
 import { CartProvider, useCart } from "@/lib/cart";
 import { sendOrder } from "@/lib/orders";
@@ -646,14 +646,8 @@ function Features() {
             <p className="mt-2 text-primary-foreground/80 max-w-md">Nem chua, nem bì và chả lụa truyền thống Đồng Tháp - gói lá hoặc đóng hộp.</p>
           </Reveal>
 
-          {/* Two compact icon cells */}
-          <Reveal delay={0.16} className="group rounded-3xl border border-background/10 p-7 transition-colors hover:bg-background/[0.05]">
-            <Truck className="size-7 mb-4 transition-transform duration-500 group-hover:-translate-y-1" strokeWidth={1.5} />
-            <h3 className="font-display text-xl">Giao toàn quốc</h3>
-            <p className="mt-1 text-sm text-background/65">Giữ lạnh, đến nơi trong 1-3 ngày.</p>
-          </Reveal>
-
-          <Reveal delay={0.24} className="group rounded-3xl border border-background/10 p-7 transition-colors hover:bg-background/[0.05]">
+          {/* Compact icon cell */}
+          <Reveal delay={0.16} className="md:col-span-2 group rounded-3xl border border-background/10 p-7 transition-colors hover:bg-background/[0.05]">
             <Shield className="size-7 mb-4 transition-transform duration-500 group-hover:rotate-6" strokeWidth={1.5} />
             <h3 className="font-display text-xl">Đổi mới 100%</h3>
             <p className="mt-1 text-sm text-background/65">Không như mong đợi, đổi ngay.</p>
@@ -669,7 +663,7 @@ function Features() {
 function CartDrawer() {
   const reduce = useReducedMotion();
   const { items, open, setOpen, inc, dec, remove, total, clear } = useCart();
-  const [form, setForm] = useState({ name: "", phone: "", address: "", note: "" });
+  const [form, setForm] = useState({ name: "", phone: "", note: "" });
   const [payment, setPayment] = useState<"qr" | "cod">("cod");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -719,7 +713,7 @@ function CartDrawer() {
 
   const resetAndContinue = () => {
     setStatus("idle");
-    setForm({ name: "", phone: "", address: "", note: "" });
+    setForm({ name: "", phone: "", note: "" });
     setPayment("cod");
     setOpen(false);
   };
@@ -813,8 +807,7 @@ function CartDrawer() {
                       />
                       {phoneShowErr && <p className="mt-1 text-xs text-destructive">Số điện thoại không hợp lệ. Nhập 10 số bắt đầu bằng 0 (vd 0907640698).</p>}
                     </div>
-                    <input required value={form.address} onChange={set("address")} placeholder="Địa chỉ giao hàng" aria-label="Địa chỉ" className={inputCls} />
-                    <textarea value={form.note} onChange={set("note")} placeholder="Ghi chú (tuỳ chọn)" aria-label="Ghi chú" rows={2} className={inputCls} />
+                    <textarea value={form.note} onChange={set("note")} placeholder="Ghi chú: ăn liền hay chưa? (mặc định lấy nem mới, 1-2 ngày sau sẽ chua)" aria-label="Ghi chú" rows={2} className={inputCls} />
                   </div>
 
                   <div className="space-y-2">

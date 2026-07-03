@@ -8,7 +8,7 @@ export interface OrderItem {
 export type PaymentMethod = "qr" | "cod";
 
 export interface OrderPayload {
-  customer: { name: string; phone: string; address: string; note?: string };
+  customer: { name: string; phone: string; note?: string };
   items: OrderItem[];
   total: number;
   payment: PaymentMethod;
